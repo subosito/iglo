@@ -19,7 +19,7 @@ func TestParseJSON(t *testing.T) {
 }
 
 func TestParseMarkdown(t *testing.T) {
-	data, err := ParseMarkdown()
+	data, err := ParseMarkdown(strings.NewReader(dummyMarkdown))
 	if err != nil {
 		t.Errorf("ParseMarkdown() returned an error %s", err)
 	}

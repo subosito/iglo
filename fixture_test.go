@@ -18,11 +18,11 @@ Represent particular Person
 
 + Parameters
 
-    + id (required, string, '123') ... The id of the Person.
+    + id (required, string, ` + "`123`" + `) ... The id of the Person.
 
 + Model (application/json)
 
-        {"name":"Gesang"}
+        {"name":"Gesang","birthdate":"01-09-1917"}
 
 ### Retrieve Person [GET]
 
@@ -68,7 +68,7 @@ var dummyJSON = `
                         "value": "application/json"
                     }
                 },
-                "body": "{\"name\":\"Gesang\"}\n",
+                "body": "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
                 "schema": ""
             },
             "parameters": {
@@ -146,7 +146,7 @@ var dummyAPI = &API{
 						Headers: map[string]Header{
 							"Content-Type": Header{Value: "application/json"},
 						},
-						Body:   "{\"name\":\"Gesang\"}\n",
+						Body:   "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
 						Schema: "",
 					},
 					Parameters: map[string]Parameter{
