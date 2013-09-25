@@ -8,7 +8,7 @@ import (
 )
 
 func HTML(w io.Writer, r io.Reader) error {
-	api, err := Parse(r)
+	api, err := ParseJSON(r)
 	if err != nil {
 		return err
 	}
