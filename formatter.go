@@ -7,12 +7,7 @@ import (
 	"strings"
 )
 
-func HTML(w io.Writer, r io.Reader) error {
-	api, err := ParseJSON(r)
-	if err != nil {
-		return err
-	}
-
+func HTML(w io.Writer, api *API) error {
 	// template functions
 	funcMap := template.FuncMap{
 		"dasherize": inflect.Dasherize,
