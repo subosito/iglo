@@ -2,6 +2,7 @@ package iglo
 
 import (
 	"bitbucket.org/pkg/inflect"
+	bf "github.com/russross/blackfriday"
 	"html/template"
 	"io"
 	"strings"
@@ -24,12 +25,18 @@ func labelize(method string) string {
 	return "default"
 }
 
+func markdownize(str string) template.HTML {
+	b := bf.MarkdownCommon([]byte(str))
+	return template.HTML(string(b))
+}
+
 func HTML(w io.Writer, api *API) error {
 	// template functions
 	funcMap := template.FuncMap{
-		"dasherize": inflect.Dasherize,
-		"trim":      strings.Trim,
-		"labelize":  labelize,
+		"dasherize":   inflect.Dasherize,
+		"trim":        strings.Trim,
+		"labelize":    labelize,
+		"markdownize": markdownize,
 	}
 
 	tmpl, err := template.New("html").Funcs(funcMap).Parse(Tmpl)
@@ -47,27 +54,27 @@ func HTML(w io.Writer, api *API) error {
 
 var Tmpl = `
 {{define "Headers"}}
-<h4>Headers</h4>
-<table class="table">
+<dl class="dl-horizontal">
 	{{range $index, $element := .}}
-		<tbody>
-		<tr>
-			<th>{{$index}}</th>
-			<td>{{.Value}}</td>
-		</tr>
-		</tbody>
+		<dt>{{$index}}</dt>
+		<dd>{{.Value}}</dd>
 	{{end}}
-</table>
+</dl>
 {{end}}
 
 {{define "Responses"}}
 	{{range .}}
 		{{if .Body}}
-			<li class="list-group-item">
+			<li class="list-group-item bg-default response">
+				<strong>Response</strong>
+				<a href="javascript:;" class="pull-right btn btn-default response-toggle"><small>SHOW</small></a>
+			</li>
+			<li class="list-group-item response-snippet">
 				<pre class="prettyprint">{{.Body}}</pre>
 			</li>
 		{{end}}
 		{{if .Headers}}
+			<li class="list-group-item bg-default"><strong>Headers</strong></li>
 			<li class="list-group-item">
 				{{template "Headers" .Headers}}
 			</li>
@@ -82,12 +89,20 @@ var Tmpl = `
 {{end}}
 
 {{define "Parameters"}}
-<h4>Parameters</h4>
-<table class="table">
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Required</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
 	{{range $index, $element := .}}
 		<tbody>
 		<tr>
 			<th>{{$index}}</th>
+			<td>{{.Required}}</td>
 			<td>{{.Type}}</td>
 			<td>{{.Description}}</td>
 		</tr>
@@ -103,9 +118,8 @@ var Tmpl = `
 
 		<div class="page-header">
 			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
+			<p class="lead"><small>{{trim .Description "\n"}}</small></p>
 		</div>
-
-		<p>{{trim .Description "\n"}}</p>
 
 		{{range .Actions}}
 		<div class="panel panel-{{labelize .Method}}">
@@ -121,6 +135,7 @@ var Tmpl = `
 			<ul class="list-group">
 				{{if .Examples}}{{template "Examples" .Examples}}{{end}}
 				{{if $Parameters}}
+					<li class="list-group-item bg-default"><strong>Parameters</strong></li>
 					<li class="list-group-item">{{template "Parameters" $Parameters}}</li>
 				{{end}}
 			</ul>
@@ -131,27 +146,19 @@ var Tmpl = `
 
 {{define "ResourceGroups"}}
 	{{range .}}
-		<div class="page-header">
-			<h1>{{.Name}}</h1>
-		</div>
-
 		{{template "Resources" .}}
 	{{end}}
 {{end}}
 
 {{define "NavResourceGroups"}}
-<ul class="nav">
+<div class="nav-rg list-group affix">
 	{{range .}}
-	<li>
-		<a href="#{{.Name | dasherize}}">{{.Name}}</a>
-		<ul class="nav">
-			{{range .Resources}}
-				<li><a href="#{{.Name | dasherize }}">{{.Name}}</a></li>
-			{{end}}
-		</ul>
-	</li>
+		<a href="#" class="list-group-item active"><strong>{{.Name}}</strong></a>
+		{{range .Resources}}
+			<a class="list-group-item" href="#{{.Name | dasherize }}">{{.Name}}</a>
+		{{end}}
 	{{end}}
-</ul>
+</div>
 {{end}}
 
 <!DOCTYPE html>
@@ -161,16 +168,48 @@ var Tmpl = `
 		<title>{{.Name}}</title>
 		<meta name="description" content="{{.Description}}">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<style>
+			body {
+				font-family: 'Open Sans', sans-serif;
+				margin-top: 20px;
+			}
+
+			tt, pre, code {
+				font-family: Consolas, "Liberation Mono", Courier, monospace;
+			}
+
 			pre.prettyprint {
 				border: 0px !important;
 				background-color: #fff;
+			}
+
+			.bg-default {
+				background-color: #F8F8F8;
+			}
+
+			.response-snippet {
+				display: none;
+			}
+
+			.nav-rg {
+				width: 262.5px;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-default">
+						<div class="navbar-header">
+							<a class="navbar-brand">{{.Name}}</a>
+						</div>
+					</nav>
+
+					<h3 class="lead">{{markdownize .Description}}</h3>
+				</div>
+
 				<div class="col-md-3">
 					{{template "NavResourceGroups" .ResourceGroups}}
 				</div>
@@ -180,7 +219,22 @@ var Tmpl = `
 				</div>
 			</div>
 		</div>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+		<script>
+			jQuery(function($) {
+				$('.response-toggle').on("click", function(e) {
+					e.preventDefault();
+
+					$(this).parent().parent().find(".response-snippet").toggle();
+					if ($(this).text() == "SHOW") {
+						$(this).text("HIDE");
+					} else {
+						$(this).text("SHOW");
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
 `
