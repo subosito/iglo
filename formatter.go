@@ -47,6 +47,7 @@ func HTML(w io.Writer, api *API) error {
 
 var Tmpl = `
 {{define "Headers"}}
+<h4>Headers</h4>
 <table class="table">
 	{{range $index, $element := .}}
 		<tbody>
@@ -59,15 +60,46 @@ var Tmpl = `
 </table>
 {{end}}
 
+{{define "Responses"}}
+	{{range .}}
+		{{if .Body}}
+			<li class="list-group-item">
+				<pre class="prettyprint">{{.Body}}</pre>
+			</li>
+		{{end}}
+		{{if .Headers}}
+			<li class="list-group-item">
+				{{template "Headers" .Headers}}
+			</li>
+		{{end}}
+	{{end}}
+{{end}}
+
 {{define "Examples"}}
+	{{range .}}
+		{{template "Responses" .Responses}}
+	{{end}}
 {{end}}
 
 {{define "Parameters"}}
+<h4>Parameters</h4>
+<table class="table">
+	{{range $index, $element := .}}
+		<tbody>
+		<tr>
+			<th>{{$index}}</th>
+			<td>{{.Type}}</td>
+			<td>{{.Description}}</td>
+		</tr>
+		</tbody>
+	{{end}}
+</table>
 {{end}}
 
 {{define "Resources"}}
 	{{range .Resources}}
 		{{$UriTemplate := .UriTemplate}}
+		{{$Parameters := .Parameters}}
 
 		<div class="page-header">
 			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
@@ -85,6 +117,13 @@ var Tmpl = `
 			<div class="panel-body">
 				{{.Description}}
 			</div>
+
+			<ul class="list-group">
+				{{if .Examples}}{{template "Examples" .Examples}}{{end}}
+				{{if $Parameters}}
+					<li class="list-group-item">{{template "Parameters" $Parameters}}</li>
+				{{end}}
+			</ul>
 		</div>
 		{{end}}
 	{{end}}
@@ -122,6 +161,12 @@ var Tmpl = `
 		<title>{{.Name}}</title>
 		<meta name="description" content="{{.Description}}">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<style>
+			pre.prettyprint {
+				border: 0px !important;
+				background-color: #fff;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container">
