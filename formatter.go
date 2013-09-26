@@ -7,11 +7,29 @@ import (
 	"strings"
 )
 
+func labelize(method string) string {
+	switch method {
+	case "GET":
+		return "primary"
+	case "POST":
+		return "success"
+	case "PUT":
+		return "info"
+	case "PATCH":
+		return "warning"
+	case "DELETE":
+		return "danger"
+	}
+
+	return "default"
+}
+
 func HTML(w io.Writer, api *API) error {
 	// template functions
 	funcMap := template.FuncMap{
 		"dasherize": inflect.Dasherize,
 		"trim":      strings.Trim,
+		"labelize":  labelize,
 	}
 
 	tmpl, err := template.New("html").Funcs(funcMap).Parse(Tmpl)
@@ -28,6 +46,75 @@ func HTML(w io.Writer, api *API) error {
 }
 
 var Tmpl = `
+{{define "Headers"}}
+<table class="table">
+	{{range $index, $element := .}}
+		<tbody>
+		<tr>
+			<th>{{$index}}</th>
+			<td>{{.Value}}</td>
+		</tr>
+		</tbody>
+	{{end}}
+</table>
+{{end}}
+
+{{define "Examples"}}
+{{end}}
+
+{{define "Parameters"}}
+{{end}}
+
+{{define "Resources"}}
+	{{range .Resources}}
+		{{$UriTemplate := .UriTemplate}}
+
+		<div class="page-header">
+			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
+		</div>
+
+		<p>{{trim .Description "\n"}}</p>
+
+		{{range .Actions}}
+		<div class="panel panel-{{labelize .Method}}">
+			<div class="panel-heading">
+				{{.Method}}
+				{{$UriTemplate}}
+			</div>
+
+			<div class="panel-body">
+				{{.Description}}
+			</div>
+		</div>
+		{{end}}
+	{{end}}
+{{end}}
+
+{{define "ResourceGroups"}}
+	{{range .}}
+		<div class="page-header">
+			<h1>{{.Name}}</h1>
+		</div>
+
+		{{template "Resources" .}}
+	{{end}}
+{{end}}
+
+{{define "NavResourceGroups"}}
+<ul class="nav">
+	{{range .}}
+	<li>
+		<a href="#{{.Name | dasherize}}">{{.Name}}</a>
+		<ul class="nav">
+			{{range .Resources}}
+				<li><a href="#{{.Name | dasherize }}">{{.Name}}</a></li>
+			{{end}}
+		</ul>
+	</li>
+	{{end}}
+</ul>
+{{end}}
+
 <!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
@@ -39,66 +126,12 @@ var Tmpl = `
 	<body>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4">
-					<ul class="list-group">
-						{{range .ResourceGroups}}
-						<li class="list-group-item">
-							<a href="#{{.Name | dasherize }}">{{.Name}}</a>
-						</li>
-						{{end}}
-					</ul>
+				<div class="col-md-3">
+					{{template "NavResourceGroups" .ResourceGroups}}
 				</div>
 
-				<div class="col-md-8">
-					{{range .ResourceGroups}}
-						<h1>{{.Name}}</h1>
-
-						{{range .Resources}}
-							<h3>{{.Name}}</h3>
-							<p>{{trim .Description "\n"}}</p>
-							{{$uri := .UriTemplate}}
-
-							{{range .Actions}}
-								<div class="panel panel-primary">
-									<div class="panel-heading">
-										{{.Method}}
-										{{$uri}}
-									</div>
-
-									<div class="panel-body">
-										{{.Description}}
-									</div>
-
-									<div class="panel-footer">
-										{{range .Examples}}
-											<ul class="list-group">
-												{{range .Requests}}
-													<li class="list-group-item">
-														<h4 class="list-group-item-heading">Headers</h4>
-														<table class="table">
-															{{range $index, $element := .Headers}}
-															<tbody>
-																<tr>
-																	<th>{{$index}}</th>
-																	<td>{{.Value}}</td>
-																</tr>
-															</tbody>
-															{{end}}
-														</table>
-													</li>
-													<li class="list-group-item">
-														<h4 class="list-group-item-heading">Body</h4>
-														<pre class="prettyprint">{{.Body}}</pre>
-													</li>
-												{{end}}
-											</ul>
-										{{end}}
-									</div>
-
-								</div>
-							{{end}}
-						{{end}}
-					{{end}}
+				<div class="col-md-9">
+					{{template "ResourceGroups" .ResourceGroups}}
 				</div>
 			</div>
 		</div>
