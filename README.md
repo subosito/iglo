@@ -15,15 +15,12 @@ FORMAT: 1A
 HOST: https://api.example.com/v1
 
 # Hello API
-
 A simple API demo
 
 # Group People
-
 This section describes about the People
 
 ## Person [/people/{id}]
-
 Represent particular Person
 
 + Parameters
@@ -35,7 +32,6 @@ Represent particular Person
         {"name":"Gesang","birthdate":"01-09-1917"}
 
 ### Retrieve Person [GET]
-
 Return the information for the Person
 
 + Request (application/json)
@@ -46,7 +42,7 @@ Return the information for the Person
 
 + Response 200 (application/json)
 
-        {"name":"Gesang","birthdate":"01-09-1917"}
+    [Person][]
 
 ```
 

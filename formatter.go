@@ -40,9 +40,11 @@ var Tmpl = `
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
-					<ul class="nav nav-pills nav-stacked">
+					<ul class="list-group">
 						{{range .ResourceGroups}}
-						<li><a href="#{{.Name | dasherize }}">{{.Name}}</a></li>
+						<li class="list-group-item">
+							<a href="#{{.Name | dasherize }}">{{.Name}}</a>
+						</li>
 						{{end}}
 					</ul>
 				</div>
@@ -62,16 +64,37 @@ var Tmpl = `
 										{{.Method}}
 										{{$uri}}
 									</div>
+
 									<div class="panel-body">
 										{{.Description}}
+									</div>
 
-										<h4>Parameters</h4>
-										{{range $index, $element := .Parameters}}
-											{{$index}}
-											{{$element}}
-											{{.Description}}
+									<div class="panel-footer">
+										{{range .Examples}}
+											<ul class="list-group">
+												{{range .Requests}}
+													<li class="list-group-item">
+														<h4 class="list-group-item-heading">Headers</h4>
+														<table class="table">
+															{{range $index, $element := .Headers}}
+															<tbody>
+																<tr>
+																	<th>{{$index}}</th>
+																	<td>{{.Value}}</td>
+																</tr>
+															</tbody>
+															{{end}}
+														</table>
+													</li>
+													<li class="list-group-item">
+														<h4 class="list-group-item-heading">Body</h4>
+														<pre class="prettyprint">{{.Body}}</pre>
+													</li>
+												{{end}}
+											</ul>
 										{{end}}
 									</div>
+
 								</div>
 							{{end}}
 						{{end}}
@@ -79,6 +102,7 @@ var Tmpl = `
 				</div>
 			</div>
 		</div>
+		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 	</body>
 </html>
 `
