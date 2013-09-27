@@ -95,17 +95,13 @@ var Tmpl = `
 	{{range .}}
 		{{if .Body}}
 			<li class="list-group-item bg-default response">
-				<strong>Response</strong>
-				<a href="javascript:;" class="pull-right btn btn-default response-toggle"><small>SHOW</small></a>
+				<strong>Response <code>{{.Name}}</code></strong>
+				<a href="javascript:;" class="pull-right btn btn-default btn-sm response-toggle"><small>SHOW</small></a>
 			</li>
-			<li class="list-group-item response-snippet">
-				<pre class="prettyprint">{{.Body}}</pre>
-			</li>
-		{{end}}
-		{{if .Headers}}
-			<li class="list-group-item bg-default"><strong>Headers</strong></li>
-			<li class="list-group-item">
+			<li class="list-group-item response-snippet" style="list-style: none">
 				{{template "Headers" .Headers}}
+				<hr>
+				<pre class="prettyprint">{{.Body}}</pre>
 			</li>
 		{{end}}
 	{{end}}
@@ -149,11 +145,11 @@ var Tmpl = `
 		</div>
 
 		<ul class="list-group">
-			{{if .Examples}}{{template "Examples" .Examples}}{{end}}
 			{{if $Parameters}}
 				<li class="list-group-item bg-default"><strong>Parameters</strong></li>
 				<li class="list-group-item">{{template "Parameters" $Parameters}}</li>
 			{{end}}
+			{{if .Examples}}{{template "Examples" .Examples}}{{end}}
 		</ul>
 	</div>
 	{{end}}
