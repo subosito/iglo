@@ -141,7 +141,7 @@ var Tmpl = `
 		</div>
 
 		<div class="panel-body">
-			{{.Description}}
+			{{markdownize .Description}}
 		</div>
 
 		<ul class="list-group">
