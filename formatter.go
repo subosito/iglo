@@ -2,6 +2,7 @@ package iglo
 
 import (
 	"bitbucket.org/pkg/inflect"
+	"bytes"
 	bf "github.com/russross/blackfriday"
 	"html/template"
 	"io"
@@ -45,6 +46,34 @@ func HTML(w io.Writer, api *API) error {
 	}
 
 	err = tmpl.Execute(w, api)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func MarkdownToHTML(w io.Writer, r io.Reader) error {
+	data, err := ParseMarkdown(r)
+	if err != nil {
+		return err
+	}
+
+	err = JSONToHTML(w, bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func JSONToHTML(w io.Writer, r io.Reader) error {
+	api, err := ParseJSON(r)
+	if err != nil {
+		return err
+	}
+
+	err = HTML(w, api)
 	if err != nil {
 		return err
 	}

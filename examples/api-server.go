@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"log"
 	"os"
-	"bytes"
 )
 
 func httpError(w http.ResponseWriter, err error) {
@@ -19,17 +18,7 @@ func main() {
 			httpError(w, err); return
 		}
 
-		data, err := iglo.ParseMarkdown(f)
-		if err != nil {
-			httpError(w, err); return
-		}
-
-		api, err := iglo.ParseJSON(bytes.NewBuffer(data))
-		if err != nil {
-			httpError(w, err); return
-		}
-
-		err = iglo.HTML(w, api)
+		err = iglo.MarkdownToHTML(w, f)
 		if err != nil {
 			httpError(w, err); return
 		}
