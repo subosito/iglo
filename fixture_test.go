@@ -127,8 +127,8 @@ var dummyAPI = &API{
 		Format: Format{"1A"},
 		Host:   Host{"https://api.example.com/v1"},
 	},
-	ResourceGroups: []Group{
-		Group{
+	ResourceGroups: []ResourceGroup{
+		ResourceGroup{
 			Name:        "People",
 			Description: "This section describes about the People\n\n",
 			Resources: []Resource{

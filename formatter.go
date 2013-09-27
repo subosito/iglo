@@ -57,7 +57,7 @@ var Tmpl = `
 <dl class="dl-horizontal">
 	{{range $index, $element := .}}
 		<dt>{{$index}}</dt>
-		<dd>{{.Value}}</dd>
+		<dd><code>{{.Value}}</code></dd>
 	{{end}}
 </dl>
 {{end}}
@@ -89,74 +89,66 @@ var Tmpl = `
 {{end}}
 
 {{define "Parameters"}}
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Required</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
+<dl class="dl-horizontal">
 	{{range $index, $element := .}}
-		<tbody>
-		<tr>
-			<th>{{$index}}</th>
-			<td>{{.Required}}</td>
-			<td>{{.Type}}</td>
-			<td>{{.Description}}</td>
-		</tr>
-		</tbody>
+		<dt>{{$index}}</dt>
+		<dd>
+		{{if .Required}}
+		{{else}}
+			<strong>(required)</strong>
+		{{end}}
+		<code>{{.Type}}</code> {{.Description}}
+		</dd>
 	{{end}}
-</table>
+</dl>
 {{end}}
 
 {{define "Resources"}}
-	{{range .Resources}}
-		{{$UriTemplate := .UriTemplate}}
-		{{$Parameters := .Parameters}}
+{{range .}}
+	{{$UriTemplate := .UriTemplate}}
+	{{$Parameters := .Parameters}}
 
-		<div class="page-header">
-			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
-			<p class="lead"><small>{{trim .Description "\n"}}</small></p>
+	{{range .Actions}}
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<span class="btn btn-{{.Method | labelize}}">{{.Method}}</span>
+			<code>{{$UriTemplate}}</code>
 		</div>
 
-		{{range .Actions}}
-		<div class="panel panel-{{labelize .Method}}">
-			<div class="panel-heading">
-				{{.Method}}
-				{{$UriTemplate}}
-			</div>
-
-			<div class="panel-body">
-				{{.Description}}
-			</div>
-
-			<ul class="list-group">
-				{{if .Examples}}{{template "Examples" .Examples}}{{end}}
-				{{if $Parameters}}
-					<li class="list-group-item bg-default"><strong>Parameters</strong></li>
-					<li class="list-group-item">{{template "Parameters" $Parameters}}</li>
-				{{end}}
-			</ul>
+		<div class="panel-body">
+			{{.Description}}
 		</div>
-		{{end}}
+
+		<ul class="list-group">
+			{{if .Examples}}{{template "Examples" .Examples}}{{end}}
+			{{if $Parameters}}
+				<li class="list-group-item bg-default"><strong>Parameters</strong></li>
+				<li class="list-group-item">{{template "Parameters" $Parameters}}</li>
+			{{end}}
+		</ul>
+	</div>
 	{{end}}
+{{end}}
 {{end}}
 
 {{define "ResourceGroups"}}
-	{{range .}}
-		{{template "Resources" .}}
-	{{end}}
+{{range .}}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
+		</div>
+		<div class="panel-body">
+			<p class="lead"><small>{{.Description}}</small></p>
+			{{template "Resources" .Resources}}
+		</div>
+	</div>
+{{end}}
 {{end}}
 
 {{define "NavResourceGroups"}}
 <div class="nav-rg list-group affix">
 	{{range .}}
-		<a href="#" class="list-group-item active"><strong>{{.Name}}</strong></a>
-		{{range .Resources}}
-			<a class="list-group-item" href="#{{.Name | dasherize }}">{{.Name}}</a>
-		{{end}}
+		<a href="#{{.Name | dasherize}}" class="list-group-item"><strong>{{.Name}}</strong></a>
 	{{end}}
 </div>
 {{end}}
@@ -172,11 +164,11 @@ var Tmpl = `
 		<style>
 			body {
 				font-family: 'Open Sans', sans-serif;
-				margin-top: 20px;
 			}
 
 			tt, pre, code {
 				font-family: Consolas, "Liberation Mono", Courier, monospace;
+				background-color: transparent !important;
 			}
 
 			pre.prettyprint {
@@ -201,13 +193,10 @@ var Tmpl = `
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<nav class="navbar navbar-default">
-						<div class="navbar-header">
-							<a class="navbar-brand">{{.Name}}</a>
-						</div>
-					</nav>
-
-					<h3 class="lead">{{markdownize .Description}}</h3>
+					<div class="page-header">
+						<h1>{{.Name}}</h1>
+						<h2 class="lead"><small>{{markdownize .Description}}</small></h2>
+					</div>
 				</div>
 
 				<div class="col-md-3">

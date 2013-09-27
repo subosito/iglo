@@ -1,11 +1,11 @@
 package iglo
 
 type API struct {
-	Version        string   `json:"_version"`
-	Name           string   `json:"name"`
-	Description    string   `json:"description"`
-	Metadata       Metadata `json:"metadata"`
-	ResourceGroups []Group  `json:"resourceGroups"`
+	Version        string          `json:"_version"`
+	Name           string          `json:"name"`
+	Description    string          `json:"description"`
+	Metadata       Metadata        `json:"metadata"`
+	ResourceGroups []ResourceGroup `json:"resourceGroups"`
 }
 
 type Host struct {
@@ -21,7 +21,7 @@ type Metadata struct {
 	Host   Host   `json:"HOST"`
 }
 
-type Group struct {
+type ResourceGroup struct {
 	Name        string     `json:"name"`
 	Description string     `json:"description"`
 	Resources   []Resource `json:"resources"`
