@@ -46,6 +46,19 @@ Return the information for the Person
 
 ```
 
+## Demo
+
+You can go to the `examples` directory and then run the `api-server.go`.
+
+```bash
+$ cd examples
+$ go run api-server.go
+```
+
+Then visit `http://localhost:8080/` to see the output.
+
+Or, you can just visit [this demo page](http://htmlpreview.github.io/?https://gist.github.com/subosito/6725894/raw/1bce7b1b925d2a25a5a53a783f4f53b3edd016be/iglo-preview.html) :)
+
 ## Dependencies
 
 The iglo `ParseMarkdown` requires [snowcrash](https://github.com/apiaryio/snowcrash) to be installed. Refer to the snowcrash page for the installation details.
