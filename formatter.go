@@ -93,22 +93,48 @@ var Tmpl = `
 
 {{define "Responses"}}
 	{{range .}}
-		{{if .Body}}
-			<li class="list-group-item bg-default response">
-				<strong>Response <code>{{.Name}}</code></strong>
-				<a href="javascript:;" class="pull-right btn btn-default btn-sm response-toggle"><small>SHOW</small></a>
-			</li>
-			<li class="list-group-item response-snippet" style="list-style: none">
+		<li class="list-group-item bg-default response">
+			<strong>Response <code>{{.Name}}</code></strong>
+			{{if .Body}}
+				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle" data-target="response-snippet">
+					<small>SHOW</small>
+				</a>
+			{{end}}
+		</li>
+		<li class="list-group-item response-snippet" style="list-style: none">
+			{{if .Headers}}
 				{{template "Headers" .Headers}}
 				<hr>
+			{{end}}
+			{{if .Body}}
 				<pre class="prettyprint">{{.Body}}</pre>
-			</li>
-		{{end}}
+			{{end}}
+		</li>
+	{{end}}
+{{end}}
+
+{{define "Requests"}}
+	{{range .}}
+		<li class="list-group-item bg-default response">
+			<strong>Requests</strong>
+			<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle" data-target="request-snippet">
+				<small>SHOW</small>
+			</a>
+		</li>
+		<li class="list-group-item request-snippet" style="display: none">
+			{{if .Headers}}
+				{{range $index, $element := .Headers}}<code>&gt; {{$index}}: {{.Value}}</code><br>{{end}}
+			{{end}}
+			{{if .Body}}
+				<pre class="prettyprint">{{.Body}}</pre>
+			{{end}}
+		</li>
 	{{end}}
 {{end}}
 
 {{define "Examples"}}
 	{{range .}}
+		{{template "Requests" .Requests}}
 		{{template "Responses" .Responses}}
 	{{end}}
 {{end}}
@@ -141,7 +167,7 @@ var Tmpl = `
 		</div>
 
 		<div class="panel-body">
-			{{markdownize .Description}}
+			{{.Description | markdownize}}
 		</div>
 
 		<ul class="list-group">
@@ -158,24 +184,26 @@ var Tmpl = `
 
 {{define "ResourceGroups"}}
 {{range .}}
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
-		</div>
-		<div class="panel-body">
-			<p class="lead"><small>{{.Description}}</small></p>
-			{{template "Resources" .Resources}}
+	<div class="tab-pane" id="{{.Name | dasherize}}">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
+			</div>
+			<div class="panel-body">
+				<p class="lead"><small>{{.Description}}</small></p>
+				{{template "Resources" .Resources}}
+			</div>
 		</div>
 	</div>
 {{end}}
 {{end}}
 
 {{define "NavResourceGroups"}}
-<div class="nav-rg list-group affix">
+<ul class="nav nav-pills nav-stacked nav-rg affix" id="group-tab">
 	{{range .}}
-		<a href="#{{.Name | dasherize}}" class="list-group-item"><strong>{{.Name}}</strong></a>
+		<li><a href="#{{.Name | dasherize}}" data-toggle="tab"><strong>{{.Name}}</strong></a></li>
 	{{end}}
-</div>
+</ul>
 {{end}}
 
 <!DOCTYPE html>
@@ -220,7 +248,7 @@ var Tmpl = `
 				<div class="col-md-12">
 					<div class="page-header">
 						<h1>{{.Name}}</h1>
-						<h2 class="lead"><small>{{markdownize .Description}}</small></h2>
+						<h2 class="lead"><small>{{.Description | markdownize}}</small></h2>
 					</div>
 				</div>
 
@@ -229,18 +257,23 @@ var Tmpl = `
 				</div>
 
 				<div class="col-md-9">
-					{{template "ResourceGroups" .ResourceGroups}}
+					<div class="tab-content">
+						{{template "ResourceGroups" .ResourceGroups}}
+					</div>
 				</div>
 			</div>
 		</div>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 		<script>
 			jQuery(function($) {
-				$('.response-toggle').on("click", function(e) {
+				$('#group-tab a:first').tab('show');
+				$('.snippet-toggle').on("click", function(e) {
 					e.preventDefault();
 
-					$(this).parent().parent().find(".response-snippet").toggle();
+					var target = $(this).data('target');
+					$(this).parent().parent().find('.' + target).toggle();
 					if ($(this).text() == "SHOW") {
 						$(this).text("HIDE");
 					} else {

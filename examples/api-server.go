@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/subosito/iglo"
-	"net/http"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -15,12 +15,14 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		f, err := os.Open("API.md")
 		if err != nil {
-			httpError(w, err); return
+			httpError(w, err)
+			return
 		}
 
 		err = iglo.MarkdownToHTML(w, f)
 		if err != nil {
-			httpError(w, err); return
+			httpError(w, err)
+			return
 		}
 	})
 
