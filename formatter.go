@@ -82,15 +82,6 @@ func JSONToHTML(w io.Writer, r io.Reader) error {
 }
 
 var Tmpl = `
-{{define "Headers"}}
-<dl class="dl-horizontal">
-	{{range $index, $element := .}}
-		<dt>{{$index}}</dt>
-		<dd><code>{{.Value}}</code></dd>
-	{{end}}
-</dl>
-{{end}}
-
 {{define "Responses"}}
 	{{range .}}
 		<li class="list-group-item bg-default response">
@@ -103,8 +94,7 @@ var Tmpl = `
 		</li>
 		<li class="list-group-item response-snippet" style="list-style: none">
 			{{if .Headers}}
-				{{template "Headers" .Headers}}
-				<hr>
+				{{range $index, $element := .Headers}}<code>&lt; {{$index}}: {{.Value}}</code><br>{{end}}
 			{{end}}
 			{{if .Body}}
 				<pre class="prettyprint">{{.Body}}</pre>
