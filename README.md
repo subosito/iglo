@@ -65,7 +65,7 @@ $ go run api-server.go
 
 Then visit `http://localhost:8080/` to see the output.
 
-Or, you can just visit [this demo page](http://htmlpreview.github.io/?https://gist.github.com/subosito/6725894/raw/1aa32d28b0950132a09f60cb91ce1b5ffb1ec5bd/iglo-preview.html) :)
+Or, you can just visit [this demo page](http://htmlpreview.github.io/?https://gist.github.com/subosito/6725894/raw/523f354769841728ede913e1a6d93bd593ef0a3e/iglo-preview.html) :)
 
 ## Dependencies
 
