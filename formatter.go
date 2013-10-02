@@ -199,7 +199,7 @@ var Tmpl = `
 		<title>{{.Name}}</title>
 		<meta name="description" content="{{.Description}}">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<style>
 			body {
 				font-family: 'Open Sans', sans-serif;
@@ -251,7 +251,7 @@ var Tmpl = `
 		</div>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+		<script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 		<script>
 			jQuery(function($) {
 				$('#group-tab a:first').tab('show');
