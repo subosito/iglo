@@ -71,7 +71,7 @@ Returns a specific Post.
     [Post][]
 
 ### Delete a Post [DELETE]
-Delete a Post. The current user must be the same user who created the Post. It returns the deleted Post on success.
+Delete a Post. The current user must be the same user who created the Post.
 
 + Response 204
 
