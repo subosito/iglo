@@ -56,6 +56,12 @@ Return the information for the Person
 
 ## Demo
 
+Make sure you have iglo installed in the GOPATH
+```bash 
+$ cd $GOPATH
+$ go get github.com/subosito/iglo
+```
+
 You can go to the `examples` directory and then run the `api-server.go`.
 
 ```bash
