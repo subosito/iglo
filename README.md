@@ -56,8 +56,9 @@ Return the information for the Person
 
 ## Demo
 
-Make sure you have iglo installed in the GOPATH
-```bash 
+Make sure you have iglo installed in the `GOPATH`
+
+```bash
 $ cd $GOPATH
 $ go get github.com/subosito/iglo
 ```

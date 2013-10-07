@@ -87,10 +87,10 @@ var Tmpl = `
 		<li class="list-group-item bg-default response">
 			<strong>Response <code>{{.Name}}</code></strong>
 			{{if .Body}}
-				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle" data-target="response-snippet"><small>SHOW</small></a>
+				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle">SHOW</a>
 			{{end}}
 		</li>
-		<li class="list-group-item response-snippet" style="list-style: none">
+		<li class="list-group-item snippet">
 			{{if .Headers}}
 				{{range $index, $element := .Headers}}<code>&lt; {{$index}}: {{.Value}}</code><br>{{end}}
 			{{end}}
@@ -105,9 +105,11 @@ var Tmpl = `
 	{{range .}}
 		<li class="list-group-item bg-default response">
 			<strong>Requests</strong>
-			<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle" data-target="request-snippet"><small>SHOW</small></a>
+			{{if .Body}}
+				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle">SHOW</a>
+			{{end}}
 		</li>
-		<li class="list-group-item request-snippet" style="display: none">
+		<li class="list-group-item snippet">
 			{{if .Headers}}
 				{{range $index, $element := .Headers}}<code>&gt; {{$index}}: {{.Value}}</code><br>{{end}}
 			{{end}}
@@ -219,7 +221,8 @@ var Tmpl = `
 				background-color: #F8F8F8;
 			}
 
-			.response-snippet {
+			.snippet {
+				list-style: none;
 				display: none;
 			}
 
@@ -259,7 +262,7 @@ var Tmpl = `
 					e.preventDefault();
 
 					var target = $(this).data('target');
-					$(this).parent().parent().find('.' + target).toggle();
+					$(this).parent().next().toggle();
 					if ($(this).text() == "SHOW") {
 						$(this).text("HIDE");
 					} else {
