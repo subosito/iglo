@@ -63,6 +63,8 @@ $ cd $GOPATH
 $ go get github.com/subosito/iglo
 ```
 
+### Serving as HTTP
+
 You can go to the `examples/api-server` directory and then run the `main.go`.
 
 ```bash
@@ -74,7 +76,22 @@ Then visit `http://localhost:8080/` to see the output.
 
 Or, you can just visit [this demo page](http://htmlpreview.github.io/?https://gist.github.com/subosito/6725894/raw/523f354769841728ede913e1a6d93bd593ef0a3e/iglo-preview.html) :)
 
+### Exporting as HTML file
+
+You can go to the `examples/api-exporter` directory and then run the `main.go`.
+
+```bash
+$ cd examples/api-exporter
+$ go run main.go -out "api-output.html"
+```
+
+Now you have HTML generated output in the `api-output.html`.
+
 ## Dependencies
 
 The iglo `ParseMarkdown` requires [snowcrash](https://github.com/apiaryio/snowcrash) to be installed. Refer to the snowcrash page for the installation details.
+
+## Related Projects
+
+- [github.com/peterhellberg/hiro](https://github.com/peterhellberg/hiro) : Allows you to generate HTML output as a file. Similar with the demo example but with more options.
 
