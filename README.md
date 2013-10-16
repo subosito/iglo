@@ -63,11 +63,11 @@ $ cd $GOPATH
 $ go get github.com/subosito/iglo
 ```
 
-You can go to the `examples` directory and then run the `api-server.go`.
+You can go to the `examples/api-server` directory and then run the `main.go`.
 
 ```bash
-$ cd examples
-$ go run api-server.go
+$ cd examples/api-server
+$ go run main.go
 ```
 
 Then visit `http://localhost:8080/` to see the output.

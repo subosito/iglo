@@ -13,11 +13,12 @@ func httpError(w http.ResponseWriter, err error) {
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		f, err := os.Open("API.md")
+		f, err := os.Open("../API.md")
 		if err != nil {
 			httpError(w, err)
 			return
 		}
+		defer f.Close()
 
 		err = iglo.MarkdownToHTML(w, f)
 		if err != nil {

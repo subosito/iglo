@@ -86,9 +86,7 @@ var Tmpl = `
 	{{range .}}
 		<li class="list-group-item bg-default response">
 			<strong>Response <code>{{.Name}}</code></strong>
-			{{if .Body}}
-				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle">SHOW</a>
-			{{end}}
+			<a href="javascript:;" class="pull-right btn btn-link btn-sm snippet-toggle">SHOW</a>
 		</li>
 		<li class="list-group-item snippet">
 			{{if .Headers}}
@@ -105,9 +103,7 @@ var Tmpl = `
 	{{range .}}
 		<li class="list-group-item bg-default response">
 			<strong>Requests</strong>
-			{{if .Body}}
-				<a href="javascript:;" class="pull-right btn btn-default btn-sm snippet-toggle">SHOW</a>
-			{{end}}
+			<a href="javascript:;" class="pull-right btn btn-link btn-sm snippet-toggle">SHOW</a>
 		</li>
 		<li class="list-group-item snippet">
 			{{if .Headers}}
