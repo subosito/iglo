@@ -38,102 +38,25 @@ Return the information for the Person
         Authorization: Basic AbcdeFg=
         ` + "```" + `
 
-+ Response 200 (application/json)
++ Response 200
 
     [Person][]
 
 `
 
-var dummyJSON = `
-{
-    "_version": "1.0",
-    "name": "Hello API",
-    "description": "A simple API demo\n\n",
-    "metadata": {
-        "FORMAT": {
-            "value": "1A"
-        },
-        "HOST": {
-            "value": "https://api.example.com/v1"
-        }
-    },
-    "resourceGroups": [{
-        "name": "People",
-        "description": "This section describes about the People\n\n",
-        "resources": [{
-            "name": "Person",
-            "description": "Represent particular Person\n\n",
-            "uriTemplate": "/people/{id}",
-            "model": {
-                "name": "Person",
-                "description": "",
-                "headers": {
-                    "Content-Type": {
-                        "value": "application/json"
-                    }
-                },
-                "body": "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
-                "schema": ""
-            },
-            "parameters": {
-                "id": {
-                    "description": "The id of the Person.",
-                    "type": "string",
-                    "required": false,
-                    "default": "",
-                    "example": "123",
-                    "values": []
-                }
-            },
-            "headers": {},
-            "actions": [{
-                "name": "Retrieve Person",
-                "description": "Return the information for the Person\n\n",
-                "method": "GET",
-                "parameters": {},
-                "headers": {},
-                "examples": [{
-                    "name": "",
-                    "description": "",
-                    "requests": [{
-                        "name": "",
-                        "description": "",
-                        "headers": {
-                            "Content-Type": {
-                                "value": "application/json"
-                            },
-                            "Authorization": {
-                                "value": "Basic AbcdeFg="
-                            }
-                        },
-                        "body": "",
-                        "schema": ""
-                    }],
-                    "responses": [{
-                        "name": "200",
-                        "description": "",
-                        "headers": {
-                            "Content-Type": {
-                                "value": "application/json"
-                            }
-                        },
-                        "body": "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
-                        "schema": ""
-                    }]
-                }]
-            }]
-        }]
-    }]
-}
-`
-
 var dummyAPI = &API{
-	Version:     "1.0",
+	Version:     "2.0",
 	Name:        "Hello API",
 	Description: "A simple API demo\n\n",
-	Metadata: Metadata{
-		Format: Format{"1A"},
-		Host:   Host{"https://api.example.com/v1"},
+	Metadata: []Metadata{
+		Metadata{
+			Name:  "FORMAT",
+			Value: "1A",
+		},
+		Metadata{
+			Name:  "HOST",
+			Value: "https://api.example.com/v1",
+		},
 	},
 	ResourceGroups: []ResourceGroup{
 		ResourceGroup{
@@ -147,30 +70,32 @@ var dummyAPI = &API{
 					Model: Model{
 						Name:        "Person",
 						Description: "",
-						Headers: map[string]Header{
-							"Content-Type": Header{Value: "application/json"},
+						Headers: []Header{
+							Header{
+								Name:  "Content-Type",
+								Value: "application/json",
+							},
 						},
 						Body:   "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
 						Schema: "",
 					},
-					Parameters: map[string]Parameter{
-						"id": Parameter{
+					Parameters: []Parameter{
+						Parameter{
+							Name:        "id",
 							Description: "The id of the Person.",
 							Type:        "string",
-							Required:    false,
+							Required:    true,
 							Default:     "",
 							Example:     "123",
 							Values:      []string{},
 						},
 					},
-					Headers: map[string]Header{},
 					Actions: []Action{
 						Action{
 							Name:        "Retrieve Person",
 							Description: "Return the information for the Person\n\n",
 							Method:      "GET",
-							Parameters:  map[string]Parameter{},
-							Headers:     map[string]Header{},
+							Parameters:  []Parameter{},
 							Examples: []Example{
 								Example{
 									Name:        "",
@@ -179,9 +104,15 @@ var dummyAPI = &API{
 										Request{
 											Name:        "",
 											Description: "",
-											Headers: map[string]Header{
-												"Content-Type":  Header{Value: "application/json"},
-												"Authorization": Header{Value: "Basic AbcdeFg="},
+											Headers: []Header{
+												Header{
+													Name:  "Content-Type",
+													Value: "application/json",
+												},
+												Header{
+													Name:  "Authorization",
+													Value: "Basic AbcdeFg=",
+												},
 											},
 											Body:   "",
 											Schema: "",
@@ -191,8 +122,11 @@ var dummyAPI = &API{
 										Response{
 											Name:        "200",
 											Description: "",
-											Headers: map[string]Header{
-												"Content-Type": Header{Value: "application/json"},
+											Headers: []Header{
+												Header{
+													Name:  "Content-Type",
+													Value: "application/json",
+												},
 											},
 											Body:   "{\"name\":\"Gesang\",\"birthdate\":\"01-09-1917\"}\n",
 											Schema: "",
