@@ -2,8 +2,6 @@ package iglo
 
 import (
 	"bytes"
-	"io/ioutil"
-	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -14,8 +12,6 @@ func TestParse(t *testing.T) {
 	if err != nil {
 		t.Errorf("ParseMarkdown() returned an error %s", err)
 	}
-
-	ioutil.WriteFile("x.json", data, os.ModePerm)
 
 	a, err := ParseJSON(bytes.NewBuffer(data))
 	if err == nil {

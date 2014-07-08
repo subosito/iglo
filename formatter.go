@@ -90,7 +90,7 @@ var Tmpl = `
 		</li>
 		<li class="list-group-item snippet">
 			{{if .Headers}}
-				{{range $index, $element := .Headers}}<code>&lt; {{$index}}: {{.Value}}</code><br>{{end}}
+				{{range $index := .Headers}}<code>&lt; {{.Name}}: {{.Value}}</code><br>{{end}}
 			{{end}}
 			{{if .Body}}
 				<pre class="prettyprint">{{.Body}}</pre>
@@ -107,7 +107,7 @@ var Tmpl = `
 		</li>
 		<li class="list-group-item snippet">
 			{{if .Headers}}
-				{{range $index, $element := .Headers}}<code>&gt; {{$index}}: {{.Value}}</code><br>{{end}}
+				{{range $index := .Headers}}<code>&gt; {{.Name}}: {{.Value}}</code><br>{{end}}
 			{{end}}
 			{{if .Body}}
 				<pre class="prettyprint">{{.Body}}</pre>
@@ -125,11 +125,10 @@ var Tmpl = `
 
 {{define "Parameters"}}
 <dl class="dl-horizontal">
-	{{range $index, $element := .}}
-		<dt>{{$index}}</dt>
+	{{range $index := .}}
+		<dt>{{.Name}}</dt>
 		<dd>
 		{{if .Required}}
-		{{else}}
 			<strong>(required)</strong>
 		{{end}}
 		<code>{{.Type}}</code> {{.Description}}
