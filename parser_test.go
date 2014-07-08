@@ -25,9 +25,9 @@ func TestCheckVersion(t *testing.T) {
 	versions := map[string]bool{
 		"0.12.0": true,
 		"0.11.0": true,
-		"0.10.1": true,
-		"0.10.0": true,
-		"0.9.0":  true,
+		"0.10.1": false,
+		"0.10.0": false,
+		"0.9.0":  false,
 		"0.8.1":  false,
 		"0.8.0":  false,
 		"0.7.5":  false,
