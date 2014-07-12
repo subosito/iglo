@@ -41,13 +41,17 @@ type Model struct {
 }
 
 type Parameter struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Type        string   `json:"type"`
-	Required    bool     `json:"required"`
-	Default     string   `json:"default"`
-	Example     string   `json:"example"`
-	Values      []string `json:"values"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Type        string  `json:"type"`
+	Required    bool    `json:"required"`
+	Default     string  `json:"default"`
+	Example     string  `json:"example"`
+	Values      []Value `json:"values"`
+}
+
+type Value struct {
+	Value string `json:"value"`
 }
 
 type Example struct {
