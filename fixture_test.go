@@ -87,7 +87,7 @@ var dummyAPI = &API{
 							Required:    true,
 							Default:     "",
 							Example:     "123",
-							Values:      []string{},
+							Values:      []Value{},
 						},
 					},
 					Actions: []Action{
