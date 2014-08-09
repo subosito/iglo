@@ -1,6 +1,7 @@
 package iglo
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -94,12 +95,24 @@ func snowcrash() (string, error) {
 }
 
 func snowcrashVersion() (string, error) {
+	var cmd *exec.Cmd
+
 	path, err := snowcrash()
 	if err != nil {
 		return "", err
 	}
 
-	cmd := exec.Command(path, "--version")
+	var stderr bytes.Buffer
+	cmd = exec.Command(path, "--help")
+	cmd.Stderr = &stderr
+	err = cmd.Run()
+
+	// returns 0.0.0 if snowcrash doesn't return version (< 0.11.0)
+	if !strings.Contains(stderr.String(), "--version") {
+		return "0.0.0", nil
+	}
+
+	cmd = exec.Command(path, "--version")
 	output, err := cmd.Output()
 	if err != nil {
 		return "", err
