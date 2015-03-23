@@ -173,7 +173,7 @@ var Tmpl = `
 				<h2 id="{{.Name | dasherize}}">{{.Name}}</h2>
 			</div>
 			<div class="panel-body">
-				<p class="lead"><small>{{.Description}}</small></p>
+				<p class="lead"><small>{{.Description | markdownize}}</small></p>
 				{{template "Resources" .Resources}}
 			</div>
 		</div>
