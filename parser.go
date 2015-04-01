@@ -28,7 +28,7 @@ func ParseJSON(r io.Reader) (*API, error) {
 }
 
 func ParseMarkdown(r io.Reader) ([]byte, error) {
-	path, err := snowcrash()
+	path, err := drafter()
 	if err != nil {
 		return nil, err
 	}
@@ -58,21 +58,21 @@ func ParseMarkdown(r io.Reader) ([]byte, error) {
 }
 
 func CheckVersion(v string) error {
-	mv, _ := version.NewVersion("0.11.0")
+	mv, _ := version.NewVersion("0.1.0")
 	ov, err := version.NewVersion(v)
 	if err != nil {
 		return err
 	}
 
 	if ov.LessThan(mv) {
-		return errors.New(fmt.Sprintf("You are using snowcrash version %s. Minimum version should be %s", ov, mv))
+		return errors.New(fmt.Sprintf("You are using drafter version %s. Minimum version should be %s", ov, mv))
 	}
 
 	return nil
 }
 
 func detectVersion() error {
-	v, err := snowcrashVersion()
+	v, err := drafterVersion()
 	if err != nil {
 		return err
 	}
@@ -85,19 +85,19 @@ func detectVersion() error {
 	return nil
 }
 
-func snowcrash() (string, error) {
-	path, err := exec.LookPath("snowcrash")
+func drafter() (string, error) {
+	path, err := exec.LookPath("drafter")
 	if err != nil {
-		return "", errors.New("Couldn't find snowcrash. Please install it first https://github.com/apiaryio/snowcrash")
+		return "", errors.New("Couldn't find drafter. Please install it first https://github.com/apiaryio/drafter")
 	}
 
 	return path, nil
 }
 
-func snowcrashVersion() (string, error) {
+func drafterVersion() (string, error) {
 	var cmd *exec.Cmd
 
-	path, err := snowcrash()
+	path, err := drafter()
 	if err != nil {
 		return "", err
 	}
@@ -107,7 +107,7 @@ func snowcrashVersion() (string, error) {
 	cmd.Stderr = &stderr
 	err = cmd.Run()
 
-	// returns 0.0.0 if snowcrash doesn't return version (< 0.11.0)
+	// returns 0.0.0 if drafter doesn't return version
 	if !strings.Contains(stderr.String(), "--version") {
 		return "0.0.0", nil
 	}

@@ -89,9 +89,8 @@ Now you have HTML generated output in the `api-output.html`.
 
 ## Dependencies
 
-The iglo `ParseMarkdown` requires [snowcrash](https://github.com/apiaryio/snowcrash) to be installed. Refer to the snowcrash page for the installation details.
+The iglo `ParseMarkdown` requires [drafter](https://github.com/apiaryio/drafter) to be installed. Refer to the drafter page for the installation details.
 
 ## Related Projects
 
 - [github.com/peterhellberg/hiro](https://github.com/peterhellberg/hiro) : Allows you to generate HTML output as a file. Similar with the demo example but with more options.
-
