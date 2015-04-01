@@ -1,7 +1,6 @@
 package iglo
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,7 +8,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os/exec"
-	"strings"
 )
 
 func ParseJSON(r io.Reader) (*API, error) {
@@ -29,11 +27,6 @@ func ParseJSON(r io.Reader) (*API, error) {
 
 func ParseMarkdown(r io.Reader) ([]byte, error) {
 	path, err := drafter()
-	if err != nil {
-		return nil, err
-	}
-
-	err = detectVersion()
 	if err != nil {
 		return nil, err
 	}
@@ -71,20 +64,6 @@ func CheckVersion(v string) error {
 	return nil
 }
 
-func detectVersion() error {
-	v, err := drafterVersion()
-	if err != nil {
-		return err
-	}
-
-	err = CheckVersion(v)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func drafter() (string, error) {
 	path, err := exec.LookPath("drafter")
 	if err != nil {
@@ -92,31 +71,4 @@ func drafter() (string, error) {
 	}
 
 	return path, nil
-}
-
-func drafterVersion() (string, error) {
-	var cmd *exec.Cmd
-
-	path, err := drafter()
-	if err != nil {
-		return "", err
-	}
-
-	var stderr bytes.Buffer
-	cmd = exec.Command(path, "--help")
-	cmd.Stderr = &stderr
-	err = cmd.Run()
-
-	// returns 0.0.0 if drafter doesn't return version
-	if !strings.Contains(stderr.String(), "--version") {
-		return "0.0.0", nil
-	}
-
-	cmd = exec.Command(path, "--version")
-	output, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
-
-	return strings.TrimSpace(strings.Replace(string(output), "v", "", 1)), nil
 }

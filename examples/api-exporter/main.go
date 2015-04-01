@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"github.com/subosito/iglo"
 	"log"
-	"flag"
 	"os"
 )
 
