@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	version "github.com/hashicorp/go-version"
 	"io"
 	"io/ioutil"
 	"os/exec"
+
+	version "github.com/hashicorp/go-version"
 )
 
 func ParseJSON(r io.Reader) (*API, error) {
@@ -44,14 +45,14 @@ func ParseMarkdown(r io.Reader) ([]byte, error) {
 
 	echo.Start()
 
-	cmd := exec.Command(path, "--format", "json")
+	cmd := exec.Command(path, "--format", "json", "--type", "ast")
 	cmd.Stdin = out
 
 	return cmd.Output()
 }
 
 func CheckVersion(v string) error {
-	mv, _ := version.NewVersion("0.1.0")
+	mv, _ := version.NewVersion("1.0.0")
 	ov, err := version.NewVersion(v)
 	if err != nil {
 		return err
