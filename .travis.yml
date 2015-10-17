@@ -1,1 +1,8 @@
 language: go
+before_script:
+  - git clone --recursive git://github.com/apiaryio/drafter.git
+  - cd drafter
+  - ./configure
+  - make drafter
+  - export PATH=$PWD/bin:$PATH
+
