@@ -5,4 +5,7 @@ before_install:
   - ./configure
   - make drafter
   - export PATH=$PWD/bin:$PATH
-
+install:
+  - go get -d -t -v
+script:
+  - go test -v
