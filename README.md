@@ -2,7 +2,7 @@
 
 API blueprint's formatter.
 
-[![Build Status](https://drone.io/github.com/subosito/iglo/status.png)](https://drone.io/github.com/subosito/iglo/latest)
+[![Build Status](https://travis-ci.org/subosito/iglo.svg?branch=master)](https://travis-ci.org/subosito/iglo)
 
 ## Writing API documentation
 
