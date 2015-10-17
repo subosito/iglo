@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/subosito/iglo"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/subosito/iglo"
 )
 
 func httpError(w http.ResponseWriter, err error) {

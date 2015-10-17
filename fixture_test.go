@@ -45,7 +45,7 @@ Return the information for the Person
 `
 
 var dummyAPI = &API{
-	Version:     "3.0",
+	Version:     "4.0",
 	Name:        "Hello API",
 	Description: "A simple API demo\n\n",
 	Metadata: []Metadata{

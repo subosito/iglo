@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
-	"github.com/subosito/iglo"
 	"log"
 	"os"
+
+	"github.com/subosito/iglo"
 )
 
 var fname = flag.String("out", "output.html", "Filename of the HTML output")
