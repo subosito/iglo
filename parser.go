@@ -1,6 +1,7 @@
 package iglo
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -37,16 +38,9 @@ func ParseMarkdown(r io.Reader) ([]byte, error) {
 		return nil, err
 	}
 
-	echo := exec.Command("echo", string(b))
-	out, err := echo.StdoutPipe()
-	if err != nil {
-		return nil, err
-	}
-
-	echo.Start()
-
+	buf := bytes.NewReader(b)
 	cmd := exec.Command(path, "--format", "json", "--type", "ast")
-	cmd.Stdin = out
+	cmd.Stdin = buf
 
 	return cmd.Output()
 }
