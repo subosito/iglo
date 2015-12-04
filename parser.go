@@ -46,7 +46,7 @@ func ParseMarkdown(r io.Reader) ([]byte, error) {
 }
 
 func CheckVersion(v string) error {
-	mv, _ := version.NewVersion("1.0.0")
+	mv, _ := version.NewVersion("2.0.1")
 	ov, err := version.NewVersion(v)
 	if err != nil {
 		return err
