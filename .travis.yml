@@ -2,6 +2,7 @@ language: go
 before_install:
   - git clone --recursive git://github.com/apiaryio/drafter.git
   - cd drafter
+  - git checkout v2.0.1
   - ./configure
   - make drafter
   - export PATH=$PWD/bin:$PATH
