@@ -49,7 +49,7 @@ func HTMLCustom(s string, w io.Writer, api *API) error {
 		return err
 	}
 
-	err = tmpl.Execute(w, api)
+	err = tmpl.Execute(w, api.AST)
 	if err != nil {
 		return err
 	}

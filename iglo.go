@@ -1,6 +1,19 @@
 package iglo
 
 type API struct {
+	Version  string   `json:"_version"`
+	AST      AST      `json:"ast"`
+	Error    Error    `json:"error"`
+	Warnings []string `json:"warnings"`
+}
+
+type Error struct {
+	Code     int      `json:"code"`
+	Message  string   `json:"message"`
+	Location []string `json:"location"`
+}
+
+type AST struct {
 	Version        string          `json:"_version"`
 	Name           string          `json:"name"`
 	Description    string          `json:"description"`
