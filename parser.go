@@ -13,13 +13,9 @@ import (
 )
 
 func ParseJSON(r io.Reader) (*API, error) {
-	b, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-
 	api := new(API)
-	err = json.Unmarshal(b, &api)
+	err := json.NewDecoder(r).Decode(&api)
+
 	if err != nil {
 		return nil, err
 	}

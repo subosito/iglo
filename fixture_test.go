@@ -148,5 +148,5 @@ var dummyAPI = &API{
 		Message:  "",
 		Location: make([]string, 0),
 	},
-	Warnings: make([]string, 0),
+	Warnings: []Warning{},
 }

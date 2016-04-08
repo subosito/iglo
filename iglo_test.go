@@ -21,7 +21,7 @@ func TestDrafterVersion(t *testing.T) {
 		panic(err)
 	}
 
-	expected := []byte("v2.0.1\n")
+	expected := []byte("v2.3.0-pre.2\n")
 	if !reflect.DeepEqual(output, expected) {
 		t.Errorf("Expected:\n%+v\nActual:\n%+v", string(expected), string(output))
 	}
