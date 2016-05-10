@@ -1,28 +1,25 @@
 package iglo
 
 import (
+	"bytes"
 	"os/exec"
-	"reflect"
 	"testing"
 )
 
 func TestDrafterVersion(t *testing.T) {
 	path, err := drafter()
 	if err != nil {
-		t.Error("Drafter is not available on the system.")
-		panic(err)
+		t.Fatalf("Drafter is not available on the system. err=%q", err)
 	}
 
 	cmd := exec.Command(path, "--version")
 
 	output, err := cmd.Output()
 	if err != nil {
-		t.Error("The drafter command failed.")
-		panic(err)
+		t.Fatalf("The drafter command failed. err=%q", err)
 	}
 
-	expected := []byte("v2.3.0\n")
-	if !reflect.DeepEqual(output, expected) {
-		t.Errorf("Expected:\n%+v\nActual:\n%+v", string(expected), string(output))
+	if want := []byte("v2.3."); !bytes.HasPrefix(output, want) {
+		t.Fatalf("Got output %q, want prefix %q", output, want)
 	}
 }
