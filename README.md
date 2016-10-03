@@ -4,6 +4,10 @@ API blueprint's formatter.
 
 [![Build Status](https://travis-ci.org/subosito/iglo.svg?branch=master)](https://travis-ci.org/subosito/iglo)
 
+## Status
+
+DEPRECATED. Please use https://github.com/subosito/snowboard instead.
+
 ## Writing API documentation
 
 For writing API documentation, the iglo using [API Blueprint](http://apiblueprint.org/) syntax. You can read about its [specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md).
