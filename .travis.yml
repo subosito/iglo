@@ -1,4 +1,6 @@
 language: go
+dist: trusty
+sudo: required
 before_install:
   - git clone --recursive git://github.com/apiaryio/drafter.git
   - cd drafter
